@@ -103,12 +103,12 @@ This command creates a distributable folder inside a new directory named dist. T
 
 ## Screenshot
 
-<img src="electron-pdf-tool/assets/ss1.png" alt="Screen Shot">
+<img src="./assets/ss1.png" alt="Screen Shot">
 
-<img src="electron-pdf-tool/assets/ss2.png" alt="Screen Shot">
+<img src="./assets/ss2.png" alt="Screen Shot">
 
 
-<img src="electron-pdf-tool/assets/ss3.png" alt="Screen Shot">
+<img src="./assets/ss3.png" alt="Screen Shot">
 
 
 
