@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure PDF Tool</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f9;
+        }
+        .container {
+            background: white;
+            padding: 30px 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            text-align: left;
+            color: #555;
+        }
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box; /* Important for padding/width calculation */
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #message {
+            margin-top: 15px;
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔑 Decrypt PDF Access</h1>
+        <form id="password-form">
+            <label for="password">Enter Decryption Password:</label>
+            <input type="password" id="password" name="password" required>
+            <button type="submit">Unlock & Select PDF</button>
+        </form>
+        <p id="message"></p>
+    </div>
+
+    <script>
+        const form = document.getElementById('password-form');
+        const passwordInput = document.getElementById('password');
+        const messageElement = document.getElementById('message');
+    
+        // --- Listener for Asynchronous Messages (Deletion Status) ---
+        
+        // This function is called by preload.js whenever the main process sends 
+        // a message with the channel 'file-operation-result'
+        window.electronAPI.onFileOperationResult((message, isSuccess) => {
+            messageElement.textContent = message;
+            messageElement.style.color = isSuccess ? 'green' : 'orange'; // Use orange for the safety warning
+            messageElement.style.fontWeight = 'bold';
+        });
+    
+    
+        // --- Form Submission Handler ---
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const password = passwordInput.value;
+            messageElement.textContent = 'Processing... Checking password and file status.';
+            messageElement.style.color = '#007bff';
+            messageElement.style.fontWeight = 'normal';
+    
+            try {
+                // Call the secure function exposed by the preload script
+                const result = await window.electronAPI.sendPasswordAndRequestFile(password);
+                
+                // The result comes back after the main process has tried to find/open the file
+                messageElement.textContent = result.message;
+                messageElement.style.color = result.success ? 'green' : 'red';
+                messageElement.style.fontWeight = 'bold';
+                
+            } catch (error) {
+                messageElement.textContent = `An unexpected error occurred during IPC communication: ${error.message}`;
+                messageElement.style.color = 'red';
+                messageElement.style.fontWeight = 'bold';
+            }
+        });
+    </script>
+
+
+
+    </body>
+</html>
