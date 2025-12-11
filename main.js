@@ -15,6 +15,7 @@ const TARGET_PDF_PATH = path.join(__dirname, TARGET_PDF_FILENAME);
 let mainWindow; // Reference to the main control window (index.html)
 let viewerWindow = null; // Reference to the PDF viewer window
 let lockCheckInterval; // Reference for the lock timer interval
+let isDocumentAccessed = false; // Flag to track if the document has been accessed
 
 /**
  * Function to create the main application window (index.html).
@@ -69,6 +70,21 @@ function stopCloseTimer() {
       console.log('Close timer stopped.');
   }
 }
+
+
+const performSafeDeletion = () => {
+  // Only attempt deletion if the document was successfully viewed
+  if (isDocumentAccessed && fs.existsSync(TARGET_PDF_PATH)) {
+      console.log('EXIT HOOK: Executing critical self-destruct.');
+      try {
+          fs.unlinkSync(TARGET_PDF_PATH); // Use SYNCHRONOUS unlink for safety
+          console.log('File successfully deleted on exit.');
+      } catch (err) {
+          console.error('ERROR: Failed to delete file on exit:', err.message);
+      }
+  }
+};
+
 
 // --- IPC Main Handlers (Backend Logic) ---
 
@@ -157,7 +173,12 @@ ipcMain.handle('decrypt-and-print-pdf', async (event, password) => {
             console.log(`--- DELETE TIMER FINISHED for ${TARGET_PDF_FILENAME} ---`);
             
             // NOTE: Deletion code is commented out for safety.
-
+            if (!fs.existsSync(TARGET_PDF_PATH)) {
+                console.log(`File already deleted or missing: ${TARGET_PDF_FILENAME}`);
+                return;
+            }
+            
+            // Perform file deletion
             fs.unlink(TARGET_PDF_PATH, (err) => {
               let message;
               let isSuccess;
@@ -227,5 +248,19 @@ app.on('activate', () => {
 // Unregister the shortcut when the app closes
 app.on('will-quit', () => {
     globalShortcut.unregisterAll();
-    stopLockTimer();
+    stopCloseTimer();
+});
+
+app.on('before-quit', (event) => {
+  // This hook runs before windows close (like the viewerWindow)
+  // We prevent the default quit behavior to run our logic first.
+  event.preventDefault(); 
+  
+  // We use a try/finally block to ensure app.quit() is called regardless of deletion success/failure
+  try {
+      performSafeDeletion(); 
+  } finally {
+      // Now that the file operation is complete (or failed), we can safely quit.
+      app.quit(); 
+  }
 });
