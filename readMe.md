@@ -111,9 +111,3 @@ This command creates a distributable folder inside a new directory named dist. T
 <img src="./assets/ss3.png" alt="Screen Shot">
 
 
-
-That's an excellent project and a perfect topic for a LinkedIn post! I will rephrase and expand your content to make it more engaging, professional, and highlight the technical achievements and future vision.
-
-Here is the draft for your LinkedIn post:
-
----

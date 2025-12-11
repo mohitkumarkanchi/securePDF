@@ -181,7 +181,7 @@ ipcMain.handle('decrypt-and-print-pdf', async (event, password) => {
             
         }, 60000); // 10 seconds = 10000 1 minute=60000
 
-        return { success: true, message: `PDF viewer opened with print option. Deletion timer started (10s).` };
+        return { success: true, message: `PDF viewer opened with print option. Deletion timer started (60s).` };
 
     } catch (err) {
         console.error('File operation failed:', err);
