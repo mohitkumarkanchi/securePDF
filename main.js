@@ -7,10 +7,9 @@ const url = require('url');
 const bcrypt = require('bcrypt');
 
 // --- Configuration Constants ---
-const TARGET_PDF_FILENAME = 'encrypted_doc.pdf';
+const { SECURE_PASSWORD_HASH, TARGET_PDF_FILENAME,LOCK_TIMEOUT_SECONDS,DELETE_TIME_SECONDS} = require('./constants');
 const TARGET_PDF_PATH = path.join(__dirname, TARGET_PDF_FILENAME);
-const { SECURE_PASSWORD_HASH } = require('./constants');
-const LOCK_TIMEOUT_SECONDS = 10; // Time in seconds of inactivity before locking
+
 
 // --- Global Variables ---
 let mainWindow; // Reference to the main control window (index.html)
@@ -123,6 +122,7 @@ ipcMain.handle('decrypt-and-print-pdf', async (event, password) => {
             viewerWindow.setContentProtection(true);
         }
 
+
         // 5. Construct URL for PDF.js Viewer
         const viewerUrl = url.format({
             pathname: path.join(__dirname, 'web', 'viewer.html'),
@@ -136,6 +136,12 @@ ipcMain.handle('decrypt-and-print-pdf', async (event, password) => {
         });
         
         viewerWindow.loadURL(viewerUrl);
+
+        // 5. CRITICAL: Hide the password screen *after* the viewer is created.
+          if (mainWindow) {
+            mainWindow.close(); // <--- Hides and destroys the password window
+            mainWindow = null;  // Clear the reference
+        }
         
         // Start the lock timer immediately
         startCloseTimer();
@@ -179,7 +185,7 @@ ipcMain.handle('decrypt-and-print-pdf', async (event, password) => {
             //         'Operation Complete. (File deletion disabled for security.)', false);
             // }
             
-        }, 60000); // 10 seconds = 10000 1 minute=60000
+        }, DELETE_TIME_SECONDS*1000); // 10 seconds = 10000 1 minute=60000
 
         return { success: true, message: `PDF viewer opened with print option. Deletion timer started (60s).` };
 
