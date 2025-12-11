@@ -26,6 +26,8 @@ This project requires **Node.js** and **npm** (Node Package Manager).
 
 Your final directory structure **must** look like this for the application to function:
 
+add your pdf document encrypted_doc.pdf in root that needs to be displayed and deleted
+
 electron-pdf-tool/ <br>
 ├── encrypted_doc.pdf    <-- CRITICAL: Your target file to be deleted <br>
 ├── main.js              <-- Main Process (Logic, Timer, Deletion)    <br>
@@ -99,7 +101,14 @@ This command creates a distributable folder inside a new directory named dist. T
 ).
 
 
+## Screenshot
 
+<img src="electron-pdf-tool/assets/ss1.png" alt="Screen Shot">
+
+<img src="electron-pdf-tool/assets/ss2.png" alt="Screen Shot">
+
+
+<img src="electron-pdf-tool/assets/ss3.png" alt="Screen Shot">
 
 
 
