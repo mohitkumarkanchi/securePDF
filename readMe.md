@@ -112,3 +112,45 @@ This command creates a distributable folder inside a new directory named dist. T
 
 
 
+That's an excellent project and a perfect topic for a LinkedIn post! I will rephrase and expand your content to make it more engaging, professional, and highlight the technical achievements and future vision.
+
+Here is the draft for your LinkedIn post:
+
+---
+
+## 🚀 LinkedIn Post Draft
+
+### **Hook**
+
+Hello Connections! 👋 It's been a while, but I'm excited to share a personal Security Engineering challenge I recently tackled with a new project.
+
+### **The Problem (The "Why")**
+
+When sharing sensitive PDF documents, existing solutions often fall short on genuine control and security:
+
+1.  **Simple Password Protection:** You risk potential password theft, and the recipient retains the file forever.
+2.  **Online Document Tools:** They rely heavily on constant internet connectivity and browser security, which is often out of your control on the client's side.
+
+I realized there was a critical gap: **No easy, offline solution exists for securely delivering an encrypted, self-destructing document with strong anti-capture measures.** 
+
+### **The Solution (The "How" & The Tech)**
+
+To solve this, I built a custom desktop application using **Node.js** and **Electron**, wrapped the encrypted PDF, and bundled it into a single executable viewer.
+
+Here’s what the solution implements:
+
+* 🔒 **Zero-Trust Delivery:** The PDF is only viewable after a password check.
+* 💣 **Self-Destruct Timer:** The source PDF file is **permanently deleted** from the user's local system after a fixed 10-second viewing window.
+* 🚫 **Anti-Capture Measures:** I utilized Electron's native OS features (`setContentProtection`) and global key handlers to actively block common screenshot methods.
+* 😴 **Idle Timeout:** The viewer closes automatically after 30 seconds of user inactivity.
+* 🖨️ **Print-Only Mode:** The viewer is stripped of download/save options, focusing the user solely on printing.
+
+### **Call to Action & Next Steps**
+
+This project has been a great exercise in applying low-level system security controls within a high-level framework.
+
+My next step is to integrate **AI/ML** for enhanced security, specifically working on **anomaly detection** to spot suspicious user behavior (e.g., rapid scrolling, automated interactions) and shut down the viewer instantly. 
+
+I would love to hear your thoughts on this approach to secure content delivery!
+
+\#SoftwareDevelopment \#NodeJS \#ElectronJS \#SecurityEngineering \#Cybersecurity \#PersonalProject \#SelfDestructingDocs

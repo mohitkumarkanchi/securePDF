@@ -6,7 +6,8 @@
     "start": "electron .",
     "test": "echo \"Error: no test specified\" && exit 1",
     "package-win": "electron-packager . 'SecurePDF' --platform=win32 --arch=x64 --overwrite --out=dist --ignore=node_modules/electron/",
-    "package-mac": "electron-packager . 'SecurePDF' --platform=darwin --arch=x64 --overwrite --out=dist --icon=./icon.icns"
+    "package-mac": "electron-packager . 'SecurePDF' --platform=darwin --arch=x64 --overwrite --out=dist --icon=./icon.icns",
+    "format": "prettier --write ."
   },
   "keywords": [],
   "author": "",
@@ -14,6 +15,13 @@
   "description": "",
   "devDependencies": {
     "electron": "^39.2.6",
-    "electron-packager": "^17.1.2"
+    "electron-packager": "^17.1.2",
+    "eslint": "^9.39.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "prettier": "^3.7.4"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0"
   }
 }

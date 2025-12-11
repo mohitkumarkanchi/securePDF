@@ -4,11 +4,12 @@ const { app, BrowserWindow, ipcMain, globalShortcut, powerMonitor } = require('e
 const path = require('path');
 const fs = require('fs');
 const url = require('url');
+const bcrypt = require('bcrypt');
 
 // --- Configuration Constants ---
 const TARGET_PDF_FILENAME = 'encrypted_doc.pdf';
 const TARGET_PDF_PATH = path.join(__dirname, TARGET_PDF_FILENAME);
-const CORRECT_PASSWORD = 'secure123'; // The password needed for access
+const { SECURE_PASSWORD_HASH } = require('./constants');
 const LOCK_TIMEOUT_SECONDS = 10; // Time in seconds of inactivity before locking
 
 // --- Global Variables ---
@@ -75,8 +76,18 @@ function stopCloseTimer() {
 // Handler for the initial password attempt and file loading
 ipcMain.handle('decrypt-and-print-pdf', async (event, password) => {
     
-    // 1. Password Validation
-    if (password !== CORRECT_PASSWORD) {
+    // --- 1. HASHING CHECK ---
+    // 1. Password HASH Validation
+    let isPasswordValid = false;
+    try {
+        // Asynchronously compares the provided plaintext password against the stored hash
+        isPasswordValid = await bcrypt.compare(password, SECURE_PASSWORD_HASH);
+    } catch (err) {
+        console.error('Bcrypt error during comparison:', err);
+        return { success: false, message: 'Security check failed due to internal error.' };
+    }
+
+    if (!isPasswordValid) {
         return { success: false, message: 'Invalid password. Access denied.' };
     }
 
