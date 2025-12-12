@@ -10,7 +10,93 @@ This is an Electron application designed for the secure, temporary viewing and p
 * **Idle Timeout Security:** Utilizes the Electron `powerMonitor` to detect inactivity. If the system is idle for **30 seconds**, the viewer window automatically closes to secure the content.
 * **Self-Destruct Logic:** The source PDF file (`encrypted_doc.pdf`) is **permanently deleted** from the project root using Node.js's `fs.unlink()` after **10 seconds** of successful access.
 
-## 🛠️ Installation and Setup
+
+## 🛠️ Installation and Setup NPM
+
+### Dependencies
+
+
+This project requires **Node.js** and **npm** (Node Package Manager).
+
+
+1.  **clone Project:**
+
+```bash
+
+git clone https://github.com/mohitkumarkanchi/securePDF.git 
+
+cd securePDF
+
+```
+
+
+2.  **setup dependencies:**
+
+
+```bash
+
+npm install .
+
+```
+
+3. **Select you pdf which you want to Wrap:**
+
+Paste you locked pdf file in root direcory name it as encrypted_doc.pdf
+
+or if you want to rename it with custom name edit the following variable name in constants file
+
+```js
+const TARGET_PDF_FILENAME = 'encrypted_doc.pdf';
+```
+
+
+4. **Hash generation for Password**
+
+
+```js
+// constants.js
+
+// This hash includes the salt and complexity rounds.
+// You must generate this once using bcrypt.hash('YOUR_PASSWORD', 10)
+// and paste hash below
+
+const SECURE_PASSWORD_HASH = '$2b$10$WC9glVXE5.uy/xxxsj5a0.Y/TspsILQUF2Zcblmm.Q6ptMzxf1eVS'; 
+```
+
+
+5. **Self Destruct Timer and Lock Out Timer:**
+
+Paste you locked pdf file in root direcory name it as encrypted_doc.pdf
+
+or if you want to rename it with custom name edit the following variable name in constants file
+
+```js
+const LOCK_TIMEOUT_SECONDS = 20; // Time in seconds of inactivity before locking file
+const DELETE_TIME_SECONDS = 240; // Time in seconds after which the file is deleted
+```
+
+
+### Step 6: Run the Package Command
+Execute the script to build your EXE (Windows example):
+
+```bash
+npm run package-win
+```
+
+This command creates a distributable folder inside a new directory named dist. The final executable (SecurePDF.exe) will be located inside the platform-specific subfolder (e.g., dist/SecurePDF-win32-x64/).
+
+
+```bash
+npm run package-mac
+```
+This command creates a distributable folder inside a new directory named dist. The final executable (SecurePDF.exe) will be located inside the platform-specific subfolder (e.g., dist/SecurePDF-darwin-x64/SecurePDF.app
+).
+
+
+
+
+
+## 🛠️ Installation and Setup ZIP
 
 ### Dependencies
 
@@ -33,9 +119,10 @@ electron-pdf-tool/ <br>
 ├── main.js              <-- Main Process (Logic, Timer, Deletion)    <br>
 ├── preload.js           <-- Secure IPC Bridge  <br>
 ├── index.html           <-- Main Application UI (Password input)  <br>
-├── package.json         <-- Project metadata and scripts   <br>
-├── web/                 <-- PDF.js Viewer files (Contains viewer.html)  <br>
-└── build/               <-- PDF.js core rendering files  <br>
+├── package.json   <-- Project metadata and scripts   <br>
+|── pdfjs      <-- Utility for pdf viewer   <br>
+    ├── web/                 <-- PDF.js Viewer files (Contains viewer.html)  <br>
+    └── build/               <-- PDF.js core rendering files  <br>
 
 
 ### Step-by-Step Setup
