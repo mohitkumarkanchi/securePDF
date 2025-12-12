@@ -8,6 +8,7 @@ const bcrypt = require('bcrypt');
 
 // --- Configuration Constants ---
 const { SECURE_PASSWORD_HASH, TARGET_PDF_FILENAME,LOCK_TIMEOUT_SECONDS,DELETE_TIME_SECONDS} = require('./constants');
+const { constants } = require('buffer');
 const TARGET_PDF_PATH = path.join(__dirname, TARGET_PDF_FILENAME);
 
 
@@ -208,7 +209,7 @@ ipcMain.handle('decrypt-and-print-pdf', async (event, password) => {
             
         }, DELETE_TIME_SECONDS*1000); // 10 seconds = 10000 1 minute=60000
 
-        return { success: true, message: `PDF viewer opened with print option. Deletion timer started (60s).` };
+        return { success: true, message: `PDF viewer opened with print option. Deletion timer started (${DELETE_TIME_SECONDS}).` };
 
     } catch (err) {
         console.error('File operation failed:', err);
