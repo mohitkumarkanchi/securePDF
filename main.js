@@ -142,7 +142,7 @@ ipcMain.handle('decrypt-and-print-pdf', async (event, password) => {
 
         // 5. Construct URL for PDF.js Viewer
         const viewerUrl = url.format({
-            pathname: path.join(__dirname, 'web', 'viewer.html'),
+            pathname: path.join(__dirname, 'pdfjs/web', 'viewer.html'),
             protocol: 'file:',
             slashes: true,
             query: {
